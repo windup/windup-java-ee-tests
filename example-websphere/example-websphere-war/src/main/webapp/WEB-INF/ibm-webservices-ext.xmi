@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.ibm.etools.webservice.wsext:WsExtension xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:com.ibm.etools.webservice.wsext="http://www.ibm.com/websphere/appserver/schemas/5.0.2/wsext.xmi" xmi:id="WsExtension_1122063424890">
+  <wsDescExt xmi:id="WsDescExt_1122063424890" wsDescNameLink="OrdersInterface">
+    <pcBinding xmi:id="PcBinding_1122063424890" pcNameLink="OrdersInterfaceSoap"/>
+  </wsDescExt>
+  <wsDescExt xmi:id="WsDescExt_1125668685187" wsDescNameLink="UploadRequestInterfaceService">
+    <pcBinding xmi:id="PcBinding_1125668685187" pcNameLink="UploadRequestInterface"/>
+  </wsDescExt>
+  <wsDescExt xmi:id="WsDescExt_1126188935234" wsDescNameLink="StoreRequestInterfaceService">
+    <pcBinding xmi:id="PcBinding_1126188935234" pcNameLink="StoreRequestInterface"/>
+  </wsDescExt>
+</com.ibm.etools.webservice.wsext:WsExtension>

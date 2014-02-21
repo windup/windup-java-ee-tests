@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<clientbnd:ApplicationClientBinding xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:clientbnd="clientbnd.xmi" xmi:id="ApplicationClientBinding_1278008657535">
+  <applicationClient href="META-INF/application-client.xml#Application-client_ID"/>
+  <ejbRefs xmi:id="EjbRefBinding_1278008657535" jndiName="ejb/org/jboss/windup/example/ejb/ExampleHome">
+    <bindingEjbRef href="META-INF/application-client.xml#EjbRef_1278008657535"/>
+  </ejbRefs>
+</clientbnd:ApplicationClientBinding>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE web-app
+xmlns="http://java.sun.com/xml/ns/j2ee"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4"
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
+    "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+<web-app>
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+        <error-page>
+            <exception-type>java.lang.Throwable</exception-type>
+            <location>error.jsp</location>
+        </error-page>
+    <display-name>Example</display-name>
+    <description>This is an example</description>
+    <resource-ref id="1">
+        
+        <description>resource</description>
+        
+        <res-ref-name>resourceOne</res-ref-name>
+        
+        <res-type>java.lang.String</res-type>
+  
+        <res-auth>Container</res-auth>            
+     </resource-ref>
+    
+    <security-constraint>
+        <display-name>Constraints</display-name>
+        <web-resource-collection>
+            <web-resource-name>ExampleCollection</web-resource-name>
+            <url-pattern>/collection</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>authenticationConstraint</description>
+            <role-name>AllUsers</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>NONE</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>BASIC</auth-method>
+    </login-config>
+    <security-role>
+        <role-name>Users</role-name>
+    </security-role>
+    <servlet>
+        <servlet-name>servlet1</servlet-name>
+        <display-name>Servlet1</display-name>
+        <servlet-class>org.jboss.windup.test.web.servlets.Servlet1</servlet-class>
+        <init-param>
+            <param-name>filepath</param-name>
+            <param-value>/WEB-INF/web_example.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>          
+    <servlet id="Servlet2">
+        <servlet-name>servlet2</servlet-name>
+        <display-name>Servlet2</display-name>
+        <description>resources</description>
+        <servlet-class>org.jboss.windup.test.web.servlets.Servlet2</servlet-class>
+        <init-param>
+            <param-name>resourcesDirectory</param-name>
+            <param-value>/WEB-INF</param-value>
+        </init-param>
+        <init-param>
+            <param-name>targetURL</param-name>
+            <param-value>/*</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping id="ServletMapping">
+        <servlet-name>Mapping</servlet-name>
+        <url-pattern>/mapping</url-pattern>
+    </servlet-mapping>
+    <listener>
+    <listener-class>org.jboss.windup.test.listeners.ExampleListener</listener-class>
+    </listener>
+    <filter>
+        <filter-name>Filter</filter-name>
+        <filter-class>org.jboss.windup.test.filters.Filter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Filter</filter-name>
+        <url-pattern>/filter</url-pattern>
+    </filter-mapping>
+    <context-param>
+        <param-name>selector</param-name>
+        <param-value>org.jboss.windup.test.selectors.Selector</param-value>
+    </context-param>
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
+      <mime-mapping>
+        <extension>wsdl</extension>
+         <mime-type>text/xml</mime-type>
+      </mime-mapping>
+      <mime-mapping>
+        <extension>xsd</extension>
+        <mime-type>text/xml</mime-type>
+      </mime-mapping>
+    <service-ref>
+        <description>Example Service</description>
+        <service-ref-name>service/ExampleService</service-ref-name>
+        <service-interface>org.jboss.windup.test.web.ExampleService</service-interface>
+        <wsdl-file>WEB-INF/wsdl/web_example.wsdl</wsdl-file>
+        <jaxrpc-mapping-file>WEB-INF/web_example_mapping.xml</jaxrpc-mapping-file>
+        <service-qname xmlns:pfx="http://localhost:8080/ExampleService/wsdl"></service-qname>
+        <port-component-ref>
+            <service-endpoint-interface>org.jboss.windup.test.web.ExampleServiceSoapPort</service-endpoint-interface>
+        </port-component-ref>
+    <handler>
+        <handler-name>org.jboss.windup.test.web.ServiceCookieHandler</handler-name>
+        <handler-class>org.jboss.windup.test.web.ServiceCookieHandler</handler-class>
+        </handler>
+    </service-ref>
+<message-destination-ref id="MessageDestRef_1">
+            
+    <description>Example Message Destination
+</description>
+
+    <message-destination-ref-name>jms/Example/MessageQueue</message-destination-ref-name>
+
+    <message-destination-type>javax.jms.Queue</message-destination-type>
+            
+    <message-destination-usage>ConsumesProduces</message-destination-usage>
+
+    <message-destination-link>jms/Example/MessageQueue</message-destination-link>
+    
+</message-destination-ref>
+    
+<message-destination>
+
+    <description>Example Message queue</description>
+
+    <message-destination-name>jms/Example/MessageQueue</message-destination-name>
+
+</message-destination>
+
+  
+    <ejb-ref>
+
+        <ejb-ref-name>ejb/ejbRef</ejb-ref-name>
+
+        <ejb-ref-type>session</ejb-ref-type>
+        
+    <home>org.jboss.windup.test.web.ejb.EjbRef</home>
+        
+    <remote>org.jboss.windup.test.web.ejb.EjbRef</remote>
+
+     </ejb-ref>
+<taglib>
+        
+    <taglib-uri>/WEB-INF/lib/taglib.tld</taglib-uri>
+
+    <taglib-location>/WEB-INF/lib/taglib.tld</taglib-location>
+    
+</taglib>
+
+</web-app>

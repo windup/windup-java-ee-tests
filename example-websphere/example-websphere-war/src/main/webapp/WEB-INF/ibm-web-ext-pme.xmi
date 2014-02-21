@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmeext:PMEWebAppExtension xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:pmeext="http://www.ibm.com/websphere/appserver/schemas/5.0/pmeext.xmi" xmi:id="PMEWebAppExtension_1238018572195">
+  <appProfileWebAppExtension xmi:id="AppProfileWebAppExtension_1238704484406">
+    <webAppExtension href="WEB-INF/ibm-web-ext.xmi#WebAppExtension_1222194644557"/>
+  </appProfileWebAppExtension>
+  <activitySessionWebAppExtension xmi:id="ActivitySessionWebAppExtension_1238018572195">
+    <webAppExtension href="WEB-INF/ibm-web-ext.xmi#WebAppExtension_1222194644557"/>
+  </activitySessionWebAppExtension>
+</pmeext:PMEWebAppExtension>

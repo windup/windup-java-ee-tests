@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<applicationext:ApplicationExtension xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:applicationext="applicationext.xmi" xmlns:application="application.xmi" xmi:id="ApplicationExtension_1">
+  <moduleExtensions xmi:type="applicationext:EjbModuleExtension" xmi:id="EjbModuleExtension_4" altRoot="ALT-INF/admin-ejb.jar">
+    <module xmi:type="application:EjbModule" href="META-INF/application.xml#EjbModule_Admin"/>
+  </moduleExtensions>
+  <moduleExtensions xmi:type="applicationext:EjbModuleExtension" xmi:id="EjbModuleExtension_1" altRoot="ALT-INF/user-ejb.jar">
+    <module xmi:type="application:EjbModule" href="META-INF/application.xml#EjbModule_1053338952974"/>
+  </moduleExtensions>
+  <moduleExtensions xmi:type="applicationext:EjbModuleExtension" xmi:id="EjbModuleExtension_2" altRoot="ALT-INF/course-ejb.jar">
+    <module xmi:type="application:EjbModule" href="META-INF/application.xml#EjbModule_1053338952975"/>
+  </moduleExtensions>
+  <moduleExtensions xmi:type="applicationext:EjbModuleExtension" xmi:id="EjbModuleExtension_3" altRoot="ALT-INF/testing-ejb.jar">
+    <module xmi:type="application:EjbModule" href="META-INF/application.xml#EjbModule_1053338952976"/>
+  </moduleExtensions>
+  <application href="META-INF/application.xml#Application_ID"/>
+</applicationext:ApplicationExtension>

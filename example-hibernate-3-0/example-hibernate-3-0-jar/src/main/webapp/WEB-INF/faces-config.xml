@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config>
+
+    <application>
+        <locale-config>
+            <default-locale>en</default-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
+    </application>
+
+    <managed-bean>
+
+        <managed-bean-name>ExampleBean</managed-bean-name>
+        <managed-bean-class>org.jboss.windup.beans.ExampleBean </managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+
+        <managed-property>
+            <property-name>entityKeyCode</property-name>
+            <property-class>java.lang.String</property-class>
+            <value>exampleValue</value>
+        </managed-property>
+
+        <managed-property>
+            <property-name>ExampleClassName</property-name>
+            <value>otherValue</value>
+        </managed-property>
+
+    </managed-bean>
+
+    <navigation-rule>
+
+        <from-view-id>example-pages/example.xhtml</from-view-id>
+
+        <navigation-case>
+            <from-action>#{exampleGetter}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>example-pages/example2.xhtml</to-view-id>
+        </navigation-case>
+
+        <navigation-case>
+            <from-action>#{exampleGetter2}</from-action>
+            <from-outcome>exception</from-outcome>
+            <to-view-id>example-pages/example3.xhtml</to-view-id>
+        </navigation-case>
+        
+    </navigation-rule>
+    
+    <navigation-rule>
+
+        <from-view-id>example-pages/example4.xhtml</from-view-id>
+
+        <navigation-case>
+            <from-action>#{getDetails}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>example-pages/example5.xhtml</to-view-id>
+        </navigation-case>
+
+    </navigation-rule>
+
+</faces-config>

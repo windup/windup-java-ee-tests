@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:flex="http://www.springframework.org/schema/flex"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:int-http="http://www.springframework.org/schema/integration/http"
+	xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
+	xmlns:int-mail="http://www.springframework.org/schema/integration/mail"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jms="http://www.springframework.org/schema/jms"
+	xmlns:jmx="http://www.springframework.org/schema/integration/jmx"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:ws="http://www.springframework.org/schema/integration/ws"
+
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jee
+		http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security-3.0.xsd
+		http://www.springframework.org/schema/tx/
+		http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration-2.1.xsd
+		http://www.springframework.org/schema/integration/http
+        http://www.springframework.org/schema/integration/http/spring-integration-http-2.1.xsd
+		http://www.springframework.org/schema/integration/jmx
+        http://www.springframework.org/schema/integration/jmx/spring-integration-jmx-2.1.xsd">
+
+
+	<import resource="windup-example-jndi-context.xml"/>
+    <import resource="windup-example-beans-context.xml"/>
+	
+    <mvc:annotation-driven />
+
+	<mvc:resources location="classpath:/META-INF/dojo/" mapping="/resources/dojo/**"/>
+
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+		    <property name="cacheMappings">
+		        <map>
+		        	<entry key="/**" value="0" />
+		        </map>
+		    </property>
+		</bean>
+		<bean class="org.jboss.windup.ExampleInterceptor" />
+	</mvc:interceptors>
+
+	<mvc:view-controller path="/" view-name="/Application.html"/>
+	<mvc:view-controller path="/uncaughtException"/>
+
+    <context:component-scan base-package="org.jboss.windup.controller" />
+	<context:annotation-config base-package="org.jboss.windup.score" />
+
+   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.DB2Dialect</prop>
+                <prop key="hbm2ddl.auto">validate</prop>
+                <prop key="show_sql">true</prop>
+                <prop key="format_sql">true</prop>
+                <prop key="hibernate.cache.use_second_level_cache">false</prop>
+                <prop key="hibernate.jdbc.batch_size">10</prop>
+            </props>
+        </property>
+        <property name="eventListeners">
+            <map>
+                <entry key="pre-update" value-ref="preUpdateLastModifiedStamper"/>
+                <entry key="pre-insert" value-ref="attributeVisibilityPresetter"/>
+            </map>
+        </property>
+        <property name="mappingResources">
+            <list>
+                <value>META-INF/hibernate/org/jboss/windup/hibernate/UUpdateAction.hbm.xml</value>
+                <value>META-INF/hibernate/org/jboss/windup/hibernate/UnaryUAttribute.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+
+	<bean id="blacklistedClasses" class="java.util.ArrayList">
+		<constructor-arg>
+			<set>
+				<value>amx_</value>
+				<value>^bea</value>
+			</set>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="ssoAuthenticationFilter" class="org.jboss.windup.sso.spring.SSOAuthenticationFilter">
+        <property name="exampleManager" ref="exampleManager" />
+        <property name="exampleManager2">
+		    <ref bean="exampleManager2" />
+		</property>
+        <property name="filterProcessesUrl"> 
+		    <value>/tx/sso_security_check</value>
+		</property>
+    </bean>
+
+    <bean id="logoutFilter" class="org.jboss.windup.sso.spring.SSOLogoutFilter">
+		<constructor-arg value="/index.jsp" />
+        <constructor-arg ref="logoutHandler" />
+        <constructor-arg>
+            <list>
+                <bean
+                    class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+            </list>
+        </constructor-arg>
+        <property name="chain">
+            <list>
+                <bean class="org.jboss.windup.processors.ExampleProcessor" parent="exampleProcessor">
+                    <property name="exThreshold" value="25" />
+                </bean>
+            </list>
+        </property>
+    </bean>
+	
+    <security:http entry-point-ref="ssoEntryPoint"
+        use-expressions="true">
+        <security:custom-filter ref="ssoAuthenticationFilter"
+            position="PRE_AUTH_FILTER" />
+        <security:custom-filter ref="logoutFilter"
+            position="LOGOUT_FILTER" />
+        <security:intercept-url pattern="/tx/authorize/**"
+            access="isAuthenticated()" />
+        <security:intercept-url pattern="/tx/menu"
+            access="isAuthenticated()" />
+        <security:access-denied-handler
+            error-page="/notauthorizedredirect.jsp" />
+    </security:http>
+	
+	<security:http access-denied-page="/403.html" entry-point-ref="smEntryPoint">
+        <security:intercept-url pattern="/**" access="R_READ, R_ADMIN" />
+        <security:intercept-url pattern="/reprocess.json*" access="R_ADMIN" />
+        <security:logout logout-url="/logout" invalidate-session="true" logout-success-url="${logoutURL}"/>
+        <security:custom-filter position="PRE_AUTH_FILTER" ref="siteminderFilter" />
+    </security:http>
+
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider
+            ref="ssoAuthenticationProvider" />
+    </security:authentication-manager>
+
+	<int:channel id="alertingEngineChannel0"/>
+	<int:channel id="commmandsChannel">
+		<int:interceptors>
+			<int:wire-tap channel="loggingChannel"/> 			
+		</int:interceptors>	
+	</int:channel>
+	<int:channel id="loggingChannel">
+			<int:dispatcher task-executor="loggingExecutor"/>
+	</int:channel>
+	<int:channel id="errorChannel">
+		<int:interceptors>
+			<int:wire-tap channel="messagingLoggingChannel"/>
+		</int:interceptors>	
+	</int:channel>
+	
+	<int:chain input-channel="commmandsChannel">
+		<int:header-enricher>
+			<int:header name="O_MESSAGE" expression="payload"/>
+		</int:header-enricher>
+		<int:transformer ref="pipeDelimitedMessageTransformer"/>
+		<int:service-activator method="handleMessage">
+			<bean class="org.jboss.windup.handlers.CMessageLoggingHandler">
+				<property name="exMessageService" ref="exMessageService"/>
+			</bean>
+		</int:service-activator>
+		<int:header-value-router header-name="M_TYPE" resolution-required="false">
+	  		<int:mapping value="OK_MESSAGE" channel="okMessageHandlerChannel" />
+	  		<int:mapping value="YESNO_MESSAGE" channel="yesNoMessageHandlerChannel" />
+		</int:header-value-router>
+	</int:chain>
+	<int:service-activator input-channel="okMessageHandlerChannel" method="handleMessage">
+		<bean class="org.jboss.windup.handlers.OKMessageHandler">
+			<property name="mService" ref="mService"/>
+			<property name="exMessageService" ref="exMessageService"/>
+		</bean>	
+	</int:service-activator>
+	
+	<int:logging-channel-adapter id="aInvalidChannelAdapter" channel="aErrorLoggingChannel" logger-name="aErrorLogger" 
+		expression="payload.cause.message + '; O MESSAGE : ' + payload.failedMessage.headers['O_MESSAGE']" level="ERROR" />	
+	
+	<int-jms:message-driven-channel-adapter channel="bFeedChannel" 
+		container="bFeedListenerContainer" error-channel="bFeedErrorChannel"/>	
+
+	<int:channel id="bFeedRouterChannel"/>
+  	<int:chain id="bFeedRouter" input-channel="bFeedRouterChannel">
+	  	<int:object-to-json-transformer object-mapper="nObjectMapper"/>
+		<int:recipient-list-router>
+			<int:recipient channel="mOutboundChannelAdapter"/>
+			<int:recipient channel="wOutboundChannelAdapter"/>  
+		</int:recipient-list-router>
+	</int:chain> 
+	
+	<int:aggregator input-channel="wFeedAggregatorChannel" output-channel="wFeedHandlerChannel" 
+		correlation-strategy="noAttributeCorrelationStrategy" release-strategy="wFeedTimeoutCountSequenceSizeReleaseStrategy"
+		send-partial-result-on-expiry="true" expire-groups-upon-completion="true"/>
+		
+	<jmx:mbean-export default-domain="org.jboss.windup.aengine.si"/>
+	
+	<context:mbean-export default-domain="org.jboss.windup.aengine.beans"/>
+
+	<jee:jndi-lookup id="aProcessorFromEmail" jndi-name="m/mail/from" />
+
+	
+	<bean id="txManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+		<property name="transactionManagerName" value="java:/TransactionManager"/>
+	</bean>
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="resetPassword*" propagation="REQUIRED" read-only="false" />
+			<tx:method name="recordDeactivatedSs" propagation="SUPPORTS" read-only="false" />
+		</tx:attributes>
+	</tx:advice>
+
+  <aop:config>
+    <aop:advisor advice-ref="txAdvice" pointcut-ref="allServiceMethods" order="3"/>
+    <aop:aspect id="serviceExecutionAspect" ref="serviceExecutor" order="1">
+    	<aop:around method="execute" pointcut-ref="allServiceMethods"/>
+  </aop:config>
+
+</beans>

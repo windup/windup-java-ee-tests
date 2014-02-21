@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the
+    distribution for a full listing of individual contributors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+  <description>A sample deployment descriptor XML file.</description>
+
+  <filter>
+
+    <filter-name>exampleFilter</filter-name>
+    <filter-class>org.jboss.windup.filter.ExampleFilter</filter-class>
+
+    <init-param>
+      <param-name>exampleParam</param-name>
+      <param-value>exampleInfo</param-value>
+    </init-param>
+
+    <init-param>
+      <param-name>otherParam</param-name>
+      <param-value>otherInfo</param-value>
+    </init-param>
+
+  </filter>
+
+  <filter>
+    <filter-name>otherFilter</filter-name>
+    <filter-class>org.jboss.windup.filter.ExampleFilter2</filter-class>
+  </filter>
+
+  <servlet>
+
+    <servlet-name>example</servlet-name>
+    <servlet-class>org.jboss.windup.servlets.ExampleServlet</servlet-class>
+
+    <init-param>
+      <param-name>application</param-name>
+      <param-value>ApplicationResources</param-value>
+    </init-param>
+
+    <init-param>
+      <param-name>config</param-name>
+      <param-value>/WEB-INF/example-config.xml</param-value>
+    </init-param>
+
+    <load-on-startup>2</load-on-startup>
+    <run-as>
+      <role-name>resource</role-name>
+    </run-as>
+
+  </servlet>
+
+  <servlet>
+    <servlet-name>example2</servlet-name>
+    <servlet-class>org.jboss.windup.servlets.ExampleServlet2</servlet-class>
+    <run-as>
+      <role-name>resource</role-name>
+    </run-as>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>example</servlet-name>
+    <url-pattern>*.ex</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>example2</servlet-name>
+    <url-pattern>/example2</url-pattern>
+  </servlet-mapping>
+
+  <welcome-file-list>
+    <welcome-file>example.jsp</welcome-file>
+  </welcome-file-list>
+
+  <jsp-config>
+
+    <taglib>
+      <taglib-uri>/WEB-INF/exampleTemplate.tld</taglib-uri>
+      <taglib-location>/WEB-INF/exampleTemplate.tld</taglib-location>
+    </taglib>
+
+    <taglib>
+      <taglib-uri>/WEB-INF/exampleBean.tld</taglib-uri>
+      <taglib-location>/WEB-INF/exampleBean.tld</taglib-location>
+    </taglib>
+
+  </jsp-config>
+
+  <security-role>
+    <role-name>resource</role-name>
+  </security-role>
+</web-app>

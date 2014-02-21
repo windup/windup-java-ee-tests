@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmeext:PMEApplicationExtension xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:pmeext="http://www.ibm.com/websphere/appserver/schemas/5.0/pmeext.xmi" xmi:id="PMEApplicationExtension_1354556179383">
+  <lastParticipantSupportExtension xmi:id="LastParticipantSupportExtension_1354556179383" acceptHeuristicHazard="true">
+    <applicationExtension href="META-INF/ibm-application-ext.xmi#ApplicationExtension_1354556179383"/>
+  </lastParticipantSupportExtension>
+</pmeext:PMEApplicationExtension>

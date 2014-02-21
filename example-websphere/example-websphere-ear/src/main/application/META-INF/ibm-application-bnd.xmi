@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.ibm.ejs.models.base.bindings.applicationbnd:ApplicationBinding xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:com.ibm.ejs.models.base.bindings.applicationbnd="applicationbnd.xmi" xmi:id="ApplicationBinding_1372480261596">
+
+<applicationbnd:ApplicationBinding xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:applicationbnd="applicationbnd.xmi" xmlns:application="application.xmi" xmi:id="ApplicationBinding_1">
+
+  <authorizationTable xmi:id="AuthorizationTable_1229709580093">
+    <authorizations xmi:id="RoleAssignment_1229709580093">
+      <specialSubjects xmi:type="applicationbnd:AllAuthenticatedUsers" xmi:id="AllAuthenticatedUsers_1229709580093" name="AllAuthenticatedUsers"/>
+      <role href="META-INF/application.xml#SecurityRole_1229709580109"/>
+      <groups xmi:id="Group_1229967356109" name="CN=vso,OU=vsp,dc=xfdomain,dc=local"/>
+    </authorizations>
+    <authorizations xmi:id="RoleAssignment_1229709580109">
+      <specialSubjects xmi:type="applicationbnd:AllAuthenticatedUsers" xmi:id="AllAuthenticatedUsers_1229709580093" name="AllAuthenticatedUsers"/>
+      <role href="META-INF/application.xml#SecurityRole_1229709580110"/>
+      <groups xmi:id="Group_1229967356110" name="CN=supervisor1,CN=Users,dc=xfdomain,dc=local"/>
+      <groups xmi:id="Group_1229967356111" name="CN=supervisor,OU=vsp,dc=xfdomain,dc=local"/>
+    </authorizations>
+    <authorizations xmi:id="RoleAssignment_1229709580110">
+      <specialSubjects xmi:type="applicationbnd:Everyone" xmi:id="Everyone_1229709580109" name="Everyone"/>
+      <role href="META-INF/application.xml#SecurityRole_1229709580111"/>
+    </authorizations>
+  </authorizationTable>
+  <application href="META-INF/application.xml#Application_ID"/>
+</applicationbnd:ApplicationBinding>

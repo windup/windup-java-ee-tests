@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.ibm.etools.webservice.wscext:WsClientExtension xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:com.ibm.etools.webservice.wscext="http://www.ibm.com/websphere/appserver/schemas/5.0.2/wscext.xmi" xmi:id="WsClientExtension_1296517897531">
+  <serviceRefs xmi:id="ServiceRef_1296517897531" serviceRefLink="service/WindupService">
+    <portQnameBindings xmi:id="PortQnameBinding_1296517897531" portQnameLocalNameLink="WindupServicePort">
+      <clientServiceConfig xmi:id="ClientServiceConfig_1296518558750">
+        <securityRequestGeneratorServiceConfig xmi:id="SecurityRequestGeneratorServiceConfig_1296518558750">
+          <securityToken xmi:id="SecurityToken_1296518558750" name="username" uri="" localName="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#UsernameToken"/>
+        </securityRequestGeneratorServiceConfig>
+      </clientServiceConfig>
+    </portQnameBindings>
+  </serviceRefs>
+  
+  <componentScopedRefs xmi:id="ComponentScopedRefs_1258830501906" componentNameLink="WindupSLSB">
+    <serviceRefs xmi:id="ServiceRef_1258830501906" serviceRefLink="service/HTMWSService">
+      <portQnameBindings xmi:id="PortQnameBinding_1258830501906" portQnameLocalNameLink="HTMWSPort">
+        <clientServiceConfig xmi:id="ClientServiceConfig_1258831411640">
+          <securityRequestGeneratorServiceConfig xmi:id="SecurityRequestGeneratorServiceConfig_1258831411640">
+            <securityToken xmi:id="SecurityToken_1258998879843" name="WindupLTPA" uri="http://www.ibm.com/websphere/appserver/tokentype/5.0.2" localName="LTPA"/>
+          </securityRequestGeneratorServiceConfig>
+          <securityResponseConsumerServiceConfig xmi:id="SecurityResponseConsumerServiceConfig_1258831518890"/>
+        </clientServiceConfig>
+      </portQnameBindings>
+    </serviceRefs>
+  </componentScopedRefs>
+</com.ibm.etools.webservice.wscext:WsClientExtension>

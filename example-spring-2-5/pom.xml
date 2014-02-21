@@ -1,0 +1,16 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.jboss.windup.tests</groupId>
+  <artifactId>example-spring-2-5</artifactId>
+  <version>0.0.1</version>
+  <packaging>pom</packaging>
+  <name>Example Spring 2.5</name>
+  <description>Example of nesting a Spring 2.5 configuration jar within a war within an ear.</description>
+  
+  <modules>
+    <module>example-spring-2-5-ejb</module>
+    <module>example-spring-2-5-war</module>    
+    <module>example-spring-2-5-ear</module>
+  </modules>
+  
+</project>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+  <!DOCTYPE weblogic-web-app 
+    PUBLIC "-//BEA Systems, Inc.//DTD Web Application 8.1//EN" 
+    "http://www.bea.com/servers/wls810/dtd/weblogic810-web-jar.dtd" >
+<weblogic-web-app>
+
+    <run-as-role-assignment>
+        <role-name>ExampleName</role-name>
+        <run-as-principal-name>example-principal-name</run-as-principal-name>
+    </run-as-role-assignment>
+
+    <reference-descriptor>
+
+        <resource-description>
+            <res-ref-name>jdbc/ExampleDS</res-ref-name>
+            <jndi-name>org.jboss.datasource.exampleDataSource</jndi-name>
+        </resource-description>
+
+        <resource-description>
+            <res-ref-name>jdbc/ExampleDS2</res-ref-name>
+            <jndi-name>org.jboss.datasource.exampleDataSource</jndi-name>
+        </resource-description>
+
+    </reference-descriptor>
+
+    <context-root>/DSExample</context-root>
+
+</weblogic-web-app>

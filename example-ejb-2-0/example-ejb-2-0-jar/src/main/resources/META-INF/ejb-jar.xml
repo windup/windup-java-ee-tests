@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar id="ejb-jar_ID">
+    <display-name>ExampleEJB</display-name>
+    <enterprise-beans>
+        <message-driven id="Request">
+            <ejb-name>Request</ejb-name>
+            <ejb-class>org.jboss.windup.ejb.RequestBean</ejb-class>
+            <transaction-type>Container</transaction-type>
+            <acknowledge-mode></acknowledge-mode>
+            <message-driven-destination>
+                <destination-type>javax.jms.Queue</destination-type>
+            </message-driven-destination>
+        </message-driven>
+
+        <message-driven id="Begin">
+            <ejb-name>Begin</ejb-name>
+            <ejb-class>org.jboss.windup.ejb.BeginRequest</ejb-class>
+            <transaction-type>Container</transaction-type>
+            <acknowledge-mode></acknowledge-mode>
+            <message-driven-destination>
+                <destination-type>javax.jms.Queue</destination-type>
+            </message-driven-destination>
+        </message-driven>
+
+        <entity id="ExampleEntity">
+         
+            <description>example entity</description>
+         
+            <display-name>ExampleEntity</display-name>
+
+         
+            <ejb-name>ExampleEntity</ejb-name>
+
+
+            <home>org.jboss.windup.ejb.ExampleEntityHome</home>
+                    <local-home>org.jboss.windup.ejb.ExampleEntityLocalHome</local-home>
+  
+            <local>org.jboss.windup.ejb.ExampleEntityLocal</local>
+
+         
+            <ejb-class>org.jboss.windup.ejb.ExampleEntityBean</ejb-class>
+         
+            <persistence-type>Bean</persistence-type>
+         
+            <prim-key-class>org.jboss.windup.ejb.ExampleEntityPK</prim-key-class>
+ 
+            <reentrant>False</reentrant>
+         
+            <cmp-version>1.x</cmp-version>
+         
+            <abstract-schema-name>AbstractExampleEntity</abstract-schema-name>
+           
+         <cmp-field >
+              
+               <description>entity ID</description>
+        
+            <field-name>entityID</field-name>
+        
+         </cmp-field>
+        
+         <cmp-field >
+        
+            <description></description>
+
+                    <field-name>description</field-name>
+
+                 </cmp-field>
+               
+            <primkey-field>entityID</primkey-field>
+
+
+        </entity>
+
+     
+
+        <entity id="SampleEntity">
+         
+            <description>sample entity</description>
+         
+            <display-name>SampleEntity</display-name>
+
+         
+            <ejb-name>SampleEntity</ejb-name>
+
+
+            <home>org.jboss.windup.ejb.SampleEntityHome</home>
+                    <local-home>org.jboss.windup.ejb.SampleEntityLocalHome</local-home>
+  
+            <local>org.jboss.windup.ejb.SampleEntityLocal</local>
+
+         
+            <ejb-class>org.jboss.windup.ejb.SampleEntityBean</ejb-class>
+         
+            <persistence-type>Bean</persistence-type>
+         
+            <prim-key-class>org.jboss.windup.ejb.SampleEntityPK</prim-key-class>
+ 
+            <reentrant>False</reentrant>
+         
+            <cmp-version>1.x</cmp-version>
+         
+            <abstract-schema-name>AbstractSampleEntity</abstract-schema-name>
+           
+         <cmp-field >
+              
+               <description>entity ID</description>
+        
+            <field-name>entityID</field-name>
+        
+         </cmp-field>
+        
+         <cmp-field >
+        
+            <description></description>
+
+                    <field-name>description</field-name>
+
+                 </cmp-field>
+               
+            <primkey-field>entityID</primkey-field>
+
+
+        </entity>
+
+      
+
+        <session id="ExampleSession">
+                 <description>example session</description>
+                    <display-name>Example Session</display-name>
+                 <ejb-name>ExampleSession</ejb-name>
+                 <home>org.jboss.windup.ejb.ExampleSessionHome</home>
+                    <remote>org.jboss.windup.ejb.ExampleSessionRemote</remote>
+                    <local-home>org.jboss.windup.ejb.ExampleSessionLocalHome</local-home>
+                    <local>org.jboss.windup.ejb.ExampleSessionLocal</local>
+                    <ejb-class>org.jboss.windup.ejb.ExampleSessionBean</ejb-class>
+                    <session-type>Stateless</session-type>
+                    <transaction-type>Container</transaction-type>
+            <ejb-link>ExampleSessionEJB</ejb-link>
+            <ejb-local-ref>ExampleSessionRef</ejb-local-ref>
+            <ejb-ref-type>Session</ejb-ref-type>
+                    <resource-ref id="resourceRef1">
+                        <res-ref-name>resource1</res-ref-name>
+                         <res-type>javax.sql.Datasource</res-type>
+                         <res-auth>Container</res-auth>
+                    </resource-ref>
+             </session>
+
+        <session id="SampleSession">
+                 <description>sample session</description>
+                    <display-name>Sample Session</display-name>
+                 <ejb-name>SampleSession</ejb-name>
+                 <home>org.jboss.windup.ejb.SampleSessionHome</home>
+                    <remote>org.jboss.windup.ejb.SampleSessionRemote</remote>
+                    <local-home>org.jboss.windup.ejb.SampleSessionLocalHome</local-home>
+                    <local>org.jboss.windup.ejb.SampleSessionLocal</local>
+                    <ejb-class>org.jboss.windup.ejb.SampleSessionBean</ejb-class>
+                    <session-type>Stateless</session-type>
+                    <transaction-type>Container</transaction-type>
+            <ejb-link>SampleSessionEJB</ejb-link>
+            <ejb-local-ref>SampleSessionRef</ejb-local-ref>
+            <ejb-ref-type>Session</ejb-ref-type>
+                    <resource-ref id="resourceRef1">
+                        <res-ref-name>resource1</res-ref-name>
+                         <res-type>javax.sql.Datasource</res-type>
+                         <res-auth>Container</res-auth>
+                    </resource-ref>
+             </session>
+
+    </enterprise-beans>
+    <assembly-descriptor>
+        <container-transaction>
+            <method>
+                <ejb-name>User</ejb-name>
+                <method-name>UserID</method-name>
+                <method-params>
+                    <method-param>java.lang.String</method-param>
+                        </method-params>
+            </method>
+            <trans-attribute>NotSupported</trans-attribute>
+        </container-transaction>
+    </assembly-descriptor>
+</ejb-jar>

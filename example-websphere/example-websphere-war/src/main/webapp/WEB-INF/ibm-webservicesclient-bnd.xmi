@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.ibm.etools.webservice.wscbnd:ClientBinding xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:com.ibm.etools.webservice.wscbnd="http://www.ibm.com/websphere/appserver/schemas/5.0.2/wscbnd.xmi" xmi:id="ClientBinding_1258830501890">
+  <componentScopedRefs xmi:id="ComponentScopedRefs_1258830501890" componentNameLink="WindupSLSB">
+    <serviceRefs xmi:id="ServiceRef_1258830501890" serviceRefLink="service/HTMWSService">
+      <portQnameBindings xmi:id="PortQnameBinding_1258830501890" portQnameLocalNameLink="HTMWSPort">
+        <securityRequestGeneratorBindingConfig xmi:id="SecurityRequestGeneratorBindingConfig_1258831518875">
+          <tokenGenerator xmi:id="TokenGenerator_1258831518875" name="WindupLTPAGenerator" classname="com.ibm.wsspi.wssecurity.token.LTPATokenGenerator">
+            <valueType xmi:id="ValueType_1258831518875" localName="LTPA" uri="http://www.ibm.com/websphere/appserver/tokentype/5.0.2" name="LTPA Token"/>
+            <callbackHandler xmi:id="CallbackHandler_1258831518875" classname="com.ibm.wsspi.wssecurity.auth.callback.LTPATokenCallbackHandler">
+              <basicAuth xmi:id="BasicAuth_1258831518875"/>
+            </callbackHandler>
+            <partReference xmi:id="PartReference_1258831518875" part="WindupLTPA"/>
+          </tokenGenerator>
+        </securityRequestGeneratorBindingConfig>
+      </portQnameBindings>
+    </serviceRefs>
+  </componentScopedRefs>
+  
+  <serviceRefs xmi:id="ServiceRef_1296517897515" serviceRefLink="service/WindupOperationsService">
+    <portQnameBindings xmi:id="PortQnameBinding_1296517897515" portQnameLocalNameLink="WindupServicePort">
+      <securityRequestGeneratorBindingConfig xmi:id="SecurityRequestGeneratorBindingConfig_1296518611453">
+        <tokenGenerator xmi:id="TokenGenerator_1296518611453" name="username" classname="com.ibm.wsspi.wssecurity.token.UsernameTokenGenerator">
+          <valueType xmi:id="ValueType_1296518611453" localName="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#UsernameToken" uri="" name="Username Token"/>
+          <callbackHandler xmi:id="CallbackHandler_1296518611453" classname="com.ibm.wsspi.wssecurity.auth.callback.NonPromptCallbackHandler">
+            <basicAuth xmi:id="BasicAuth_1296518611453" userid="Windup" password="{xor}ETxuPHsmLAosbC0="/>
+          </callbackHandler>
+          <partReference xmi:id="PartReference_1296518611453" part="username"/>
+        </tokenGenerator>
+      </securityRequestGeneratorBindingConfig>
+    </portQnameBindings>
+  </serviceRefs>
+</com.ibm.etools.webservice.wscbnd:ClientBinding>
+

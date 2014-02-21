@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.jboss.windup.processors">
+
+    <class name="ExampleProcessor" table="EI1" mutable="false">
+        <id name="Example2" column="EX2">
+            <generator class="assigned"/>
+        </id>
+        <property name="ex3" column="EX3"/>
+        <property name="ex4" column="EX4"/>
+    </class>
+
+    <query name="getExampleProcessor1">
+        <!-- not sure how to cleanly recreate this -->
+        <!-- <![CDATA[]]> -->
+    </query>
+
+    <sql-query name="getExampleProcessor2">
+        <return-scalar column="EX12" type="string"/>
+        <return-scalar column="EX13" type="org.jboss.windup.hibernate.CDT"/>
+        <!-- not sure how to cleanly recreate this -->
+        <!-- <![CDATA[]]> -->
+    </sql-query>
+
+    <sql-query name="getExampleProcessor3">
+        <return-scalar column="EX15" type="string"/>
+        <return-scalar column="EX16" type="org.jboss.windup.hibernate.CDT"/>
+        <!-- not sure how to cleanly recreate this -->
+        <!-- <![CDATA[]]> -->
+    </sql-query>
+        
+</hibernate-mapping>

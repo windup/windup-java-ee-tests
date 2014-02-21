@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.jboss.windup">
+
+    <class name="ExampleInterceptor" table="EI1" mutable="false">
+        <id name="Example2" column="EX2">
+            <generator class="assigned"/>
+        </id>
+        <property name="example3" column="EX3"/>
+        <property name="example4" column="EX4"/>
+    </class>
+
+    <query name="getExample10">
+        <!-- not sure how to cleanly recreate this -->
+        <!-- <![CDATA[]]> -->
+    </query>
+
+    <sql-query name="getExample11">
+        <return-scalar column="EX12" type="string"/>
+        <return-scalar column="EX13" type="org.jboss.windup.hibernate.CDT"/>
+        <!-- not sure how to cleanly recreate this -->
+        <!-- <![CDATA[]]> -->
+    </sql-query>
+
+    <sql-query name="getExample14">
+        <return-scalar column="EX15" type="string"/>
+        <return-scalar column="EX16" type="org.jboss.windup.hibernate.CDT"/>
+        <!-- not sure how to cleanly recreate this -->
+        <!-- <![CDATA[]]> -->
+    </sql-query>
+        
+</hibernate-mapping>

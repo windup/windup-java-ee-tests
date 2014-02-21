@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<webappbnd:WebAppBinding xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:common="common.xmi" xmlns:webappbnd="webappbnd.xmi" xmi:id="WebAppBinding_1216196661945" virtualHostName="default_host">
+  <webapp href="WEB-INF/web.xml#WebApp_ID"/>
+  <resRefBindings xmi:id="ResourceRefBinding_1221656232103" jndiName="jdbc/vcpm/das1">
+    <bindingResourceRef href="WEB-INF/web.xml#ResourceRef_1221656232103"/>
+  </resRefBindings>
+  <ejbRefBindings xmi:id="EjbRefBinding_1217931616879" jndiName="ejb/org/jboss/windup/example/AdminServiceLocalHome">
+    <bindingEjbRef xmi:type="common:EJBLocalRef" href="WEB-INF/web.xml#EJBLocalRef_1217931616879"/>
+  </ejbRefBindings>
+  <ejbRefBindings xmi:id="EjbRefBinding_1221820388615" jndiName="ejb/org/jboss/windup/example/SystemServiceLocalHome">
+    <bindingEjbRef xmi:type="common:EJBLocalRef" href="WEB-INF/web.xml#EJBLocalRef_1221820388615"/>
+  </ejbRefBindings>
+</webappbnd:WebAppBinding>

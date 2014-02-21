@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+
+	xmlns:context="http://www.springframework.org/schema/context"
+
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+ 
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd 
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+
+	<jee:jndi-lookup id="dataSource" jndi-name="DataSource"
+		resource-ref="true" expected-type="javax.sql.DataSource"
+		lookup-on-startup="false">
+	</jee:jndi-lookup>
+	<int-jms:message-driven-channel-adapter
+		channel="channel1" container="listenerContainer1" error-channel="ErrorChannel" />
+	<int-jms:message-driven-channel-adapter
+		channel="channel2" container="listenerContainer2" error-channel="ErrorChannel" />
+
+	<context:component-scan base-packe="org" />
+	<context:spring-configured />
+	<bean id="beanOne" class="org.jboss.windup.tests.spring.bean.BeanOne">
+		<constructor-arg value="constructor" />
+		<property name="path" value="org.jboss.windup.tests">
+			<ref bean="refBean" />
+			<list>
+				<value>path: org.jboss.windup</value>
+				<value>classpath: .test.spring.bean.beanOne</value>
+			</list>
+			<props>
+				<prop key="/welcome.html">Welcome</prop>
+			</props>
+		</property>
+		<property name="rules" value="none" />
+	</bean>
+
+	<bean id="listenerContainer1" parent="beanOne">
+		<property name="destination" value="here" />
+	</bean>
+
+
+	<bean id="beanTwo" parent="beanOne"
+		class="org.jboss.windup.testss.spring.bean.BeanTwo">
+		<property name="details" ref="details" />
+	</bean>
+
+	<beans:bean id="beanThree" class="org.jboss.windup.tests.spring.bean.BeanThree">
+		<beans:property name="property">
+			<beans:list>
+				<beans:ref bean="beanTwo" />
+				<beans:ref bean="otherBean" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<http access-decision-manager-ref="YesorNo" servlet-api-provision="true"
+		access-denied-page="/login/error403">
+		<intercept-url pattern="/*.html" filters="none" />
+		<intercept-url pattern="/*.jsp" filters="none" />
+		<form-login login-page="/welcome"
+			authentication-failure-url="/error" default-target-url="/"
+			always-use-default-target="false" />
+		<http-basic />
+		<logout logout-success-url="/logout" invalidate-session="true" />
+		<remember-me key="YesorNo" services-ref="beanFour" />
+	</http>
+
+	<beans:bean id="beanFour" class="org.jboss.windup.tests.spring.bean.BeanFour">
+		<beans:property name="key" value="YesorNo" />
+		<beans:property name="remember" value="false" />
+	</beans:bean>
+
+	<util:map id="">
+		<entry key="user" value="username" />
+		<entry key="password" value="password" />
+
+	</util:map>
+
+
+	<drools:resource id="resourceOne" type="DRL"
+		source="org.jboss.windup.tests.spring.drools.resourceOne.drl" />
+
+	<drools:resource id="resourceTwo" type="DRL"
+		source="org.jboss.windup.tests.spring.drools.resourceTwo.drl" />
+
+
+	<drools:kbase id="kbaseOne">
+
+		<drools:configuration>
+
+			<drools:mbeans enabled="true" />
+
+			<drools:event-processing-mode mode="STREAM" />
+
+		</drools:configuration>
+
+	</drools:kbase>
+
+
+	<drools:kbase id="kbaseTwo">
+
+		<drools:configuration>
+
+			<drools:mbeans enabled="true" />
+
+			<drools:event-processing-mode mode="STREAM" />
+
+		</drools:configuration>
+
+	</drools:kbase>
+
+
+	<drools:ksession id="ksessionOne" type="stateful"
+		kbase="kbaseOne" />
+
+	<drools:ksession id="ksessionTwo" type="stateless"
+		kbase="kbaseTwo" />
+	<aop:config>
+
+		<aop:advisor
+			pointcut="execution(*org.jboss.windup.tests.spring.client.beanServiceInterface.*(..))"
+			advice-ref="beanServiceCache" />
+
+		<aop:advisor
+			pointcut="execution(*org.jboss.windup.tests.spring.client.exampleServiceInterface.*(..))"
+			advice-ref="exampleServiceCache" />
+
+	</aop:config>
+	
+	
+	<bean id="beanFive" class="org.jboss.windup.tests.spring.bean.BeanFive">
+		<property name="synchedLocalTransactionAllowed" value="true" />	
+		<property name="targetConnectionFactory">
+            <bean id="CachingConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+			<property name="targetConnectionFactory">
+            <bean id="ConnectionFactory" class="com.ibm.mq.jms.MQQueueConnectionFactory" >
+			    <property name="transportType" value="1"/>
+			    <property name="queueManager" ref="QueueManagerName"/>
+						<property name="hostName" ref="HostName"/>
+						<property name="port" ref="HostPort"/>
+						<property name="channel" ref="Channel"/>
+						<property name="useConnectionPooling" value="true"/>
+					</bean>
+				</property>
+			</bean>	
+		</property>	
+	</bean>
+	
+	<bean id="jndiTemplate" class="org.springframework.jndi.JndiTemplate">
+		<property name="environment">
+			<props>
+				<prop key="java.naming.factory.initial">org.jnp.interfaces.NamingContextFactory</prop>
+				<prop key="java.naming.factory.url.pkgs">org.jnp.interfaces:org.jboss.naming</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="destinationResolver" class="org.springframework.jms.support.destination.JndiDestinationResolver">
+		<property name="jndiTemplate" ref="jndiTemplate"/>
+	</bean>
+	    
+    <int:channel id="smtpIn"/>
+	<int:channel id="smtpOut"/>
+	<int:transformer input-channel="smtpIn" output-channel="smtpOut">
+  		<bean class="org.jboss.windup.tests.spring.bean.SMTP"/>
+  	</int:transformer>
+	<int:gateway id="smtpGateway" service-interface="org.jboss.windup.tests.spring.messaging.SmtpGateway" default-request-channel="smtpGateway" />
+    <int-jms:outbound-channel-adapter channel="smtpGateway" destination-name="MAIL" connection-factory="ConnectionFactory" destination-resolver="destinationResolver" />
+
+	<bean id="mobileGateway" class="org.jboss.windup.tests.spring.messaging.MobileGateway"/>
+	
+	<int:channel id="mobileGatewayChannelOut1"/>
+	<int:channel id="mobileGatewayChannelOut2"/>
+		
+	<int:gateway id="mobileGateway" service-interface="org.jboss.windup.tests.spring.messaging.MobileGateway" default-request-channel="mobileGatewayChannelOut1">
+		<int:method name="send" request-channel="mobileGatewayChannelOut1"/>
+		<int:method name="send2" request-channel="mobileGatewayChannelOut2"/>
+	</int:gateway>
+	
+    <int-jms:outbound-channel-adapter channel="mobileGatewayChannelOut1" destination-name="GATEWAY1" connection-factory="ConnectionFactory" destination-resolver="destinationResolver" />	
+    <int-jms:outbound-channel-adapter channel="mobileGatewayChannelOut2" destination-name="GATEWAY2" connection-factory="ConnectionFactory" destination-resolver="destinationResolver" />
+    
+    <!-- SMS Gateway -->
+    <bean id="smsGateway" class="org.jboss.windup.tests.spring.messaging.SmtpGateway"/>
+    
+    <int:channel id="smsChannelOut"/>
+    
+    <int:gateway id="smsGateway" service-interface="org.jboss.windup.tests.spring.messaging.SmtpGateway" default-request-channel="smsChannelOut" />
+    
+    <int-jms:outbound-channel-adapter channel="smsChannelOut" destination-name="MESSAGES" connection-factory="ConnectionFactory" destination-resolver="destinationResolver" />	
+</beans>

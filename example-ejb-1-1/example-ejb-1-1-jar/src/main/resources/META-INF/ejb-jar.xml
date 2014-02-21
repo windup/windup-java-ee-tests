@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE ejb-jar PUBLIC
+'-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 1.1//EN'
+'http://java.sun.com/j2ee/dtds/ejb-jar_1_1.dtd'>
+
+<ejb-jar>
+   <enterprise-beans>
+
+      <session>
+    <description>Session One</description>
+    <display-name>Session-One</display-name>
+    <ejb-name>session.SessionOne</ejb-name>
+    <home>org.jboss.windup.test.session.ejb.SessionOneHome</home>
+    <remote>org.jboss.windup.test.session.ejb.SessionOneRemote</remote>
+    <ejb-class>org.jboss.windup.test.session.ejb.SessionOne</ejb-class>
+    <session-type>Stateless</session-type>
+    <transaction-type>Container</transaction-type>
+    <env-entry>
+        <env-entry-name>Timeout</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>500</env-entry-value>
+    </env-entry>
+       <env-entry>
+        <env-entry-name>ejb.allowableUsers</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>all</env-entry-value>
+    </env-entry>
+      </session>
+
+      <session>
+    <description>Session Two</description>
+    <display-name>Session-Two</display-name>
+    <ejb-name>session.SessionTwo</ejb-name>
+    <home>org.jboss.windup.test.session.ejb.SessionTwoHome</home>
+    <remote>org.jboss.windup.test.session.ejb.SessionTwoRemote</remote>
+    <ejb-class>org.jboss.windup.test.session.ejb.SessionTwo</ejb-class>
+    <session-type>Stateless</session-type>
+    <transaction-type>Container</transaction-type>
+    <env-entry>
+        <env-entry-name>Timeout</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>500</env-entry-value>
+    </env-entry>
+        <env-entry>
+        <env-entry-name>ejb.allowableUsers</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>all</env-entry-value>
+    </env-entry>
+      </session>
+
+      <entity>
+    <description>Location of Session</description>
+    <display-name>SessionLocation</display-name>
+    <ejb-name>session.SessionLocation</ejb-name>
+    <home>org.jboss.windup.test.session.ejb.SessionLocationHome</home>
+    <remote>org.jboss.windup.test.session.ejb.SessionLocationRemote</remote>
+    <ejb-class>org.jboss.windup.test.session.ejb.SessionLocation</ejb-class>
+    <persistence-type>Container</persistence-type>
+    <prim-key-class>org.jboss.windup.test.session.ejb.SessionLocationPK</prim-key-class>
+    <reentrant>False</reentrant>
+    <cmp-version>1.x</cmp-version>
+    <abstract-schema-name>AbstractSessionLocationEJB</abstract-schema-name>
+    <cmp-field><field-name>sessionId</field-name></cmp-field>
+    <cmp-field><field-name>sessionUser</field-name></cmp-field>
+    <query>
+        <description>finds by session id</description>
+        <query-method>
+            <method-name>findBySessionId</method-name>
+            <method-params><method-param>java.lang.String
+            </method-param>
+            </method-params>
+        </query-method>
+        <ejb-ql>
+            <![CDATA[select objec(1) FROM AbstractSessionEJB 1 WHERE 1.sessionId = ?1 ]]>
+        </ejb-ql>
+    </query>
+      </entity>
+
+     <entity>
+    <description>Date of Session</description>
+    <display-name>SessionDate</display-name>
+    <ejb-name>session.SessionDate</ejb-name>
+    <home>org.jboss.windup.test.session.ejb.SessionDateHome</home>
+    <remote>org.jboss.windup.test.session.ejb.SessionDateRemote</remote>
+    <ejb-class>org.jboss.windup.test.session.ejb.SessionDate</ejb-class>
+    <persistence-type>Container</persistence-type>
+    <prim-key-class>org.jboss.windup.test.session.ejb.SessionDatePK</prim-key-class>
+    <reentrant>False</reentrant>
+    <cmp-version>1.x</cmp-version>
+    <abstract-schema-name>AbstractSessionDateEJB</abstract-schema-name>
+    <cmp-field><field-name>sessionId</field-name></cmp-field>
+    <cmp-field><field-name>sessionUser</field-name></cmp-field>
+    <query>
+        <description>finds by session id</description>
+        <query-method>
+            <method-name>findBySessionId</method-name>
+            <method-params><method-param>java.lang.String
+            </method-param>
+            </method-params>
+        </query-method>
+        <ejb-ql>
+            <![CDATA[select objec(1) FROM AbstractSessionNumberReadOnlyEJB 1 WHERE 1.sessionId = ?1 ]]>
+        </ejb-ql>
+    </query>
+      </entity>
+
+   </enterprise-beans>
+  <assembly-descriptor>
+
+
+    <security-role>
+      <description></description>
+      <role-name>User</role-name>
+    </security-role>
+
+    <security-role>
+      <description></description>
+      <role-name>Visitor</role-name>
+    </security-role>
+
+    <container-transaction>
+      <method>
+        <ejb-name>session.SessionOne</ejb-name>
+        <method-intf>Remote</method-intf>
+        <method-name>*</method-name>
+      </method>
+      <method>
+        <ejb-name>session.SessionOne</ejb-name>
+        <method-intf>Home</method-intf>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute></trans-attribute>
+    </container-transaction>
+
+    <container-transaction>
+      <method>
+        <ejb-name>session.SessionTwo</ejb-name>
+        <method-intf>Remote</method-intf>
+        <method-name>*</method-name>
+      </method>
+      <method>
+        <ejb-name>session.SessionTwo</ejb-name>
+        <method-intf>Home</method-intf>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute>NotSupported</trans-attribute>
+    </container-transaction>
+  </assembly-descriptor>
+
+</ejb-jar>
