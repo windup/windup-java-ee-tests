@@ -78,42 +78,42 @@
                 <prop key="hibernate.jdbc.batch_size">10</prop>
             </props>
         </property>
-        <property name="eventListeners">
+        <property name="exampleProperty">
             <map>
-                <entry key="pre-update" value-ref="preUpdateLastModifiedStamper"/>
-                <entry key="pre-insert" value-ref="attributeVisibilityPresetter"/>
+                <entry key="exkey1" value-ref="exvalue1"/>
+                <entry key="exkey2" value-ref="exvalue2"/>
             </map>
         </property>
         <property name="mappingResources">
             <list>
-                <value>META-INF/hibernate/org/jboss/windup/hibernate/UUpdateAction.hbm.xml</value>
-                <value>META-INF/hibernate/org/jboss/windup/hibernate/UnaryUAttribute.hbm.xml</value>
+                <value>META-INF/hibernate/org/jboss/windup/hibernate/Resource.hbm.xml</value>
+                <value>META-INF/hibernate/org/jboss/windup/hibernate/Resource2.hbm.xml</value>
             </list>
         </property>
     </bean>
 
-	<bean id="blacklistedClasses" class="java.util.ArrayList">
+	<bean id="blClasses" class="java.util.ArrayList">
 		<constructor-arg>
 			<set>
-				<value>amx_</value>
-				<value>^bea</value>
+				<value>example</value>
+				<value>example2</value>
 			</set>
 		</constructor-arg>
 	</bean>
 	
-	<bean id="ssoAuthenticationFilter" class="org.jboss.windup.sso.spring.SSOAuthenticationFilter">
+	<bean id="exampleBean" class="org.jboss.windup.example.spring.ExampleBean">
         <property name="exampleManager" ref="exampleManager" />
         <property name="exampleManager2">
 		    <ref bean="exampleManager2" />
 		</property>
-        <property name="filterProcessesUrl"> 
-		    <value>/tx/sso_security_check</value>
+        <property name="windupProperty"> 
+		    <value>/tx/windup_property_value</value>
 		</property>
     </bean>
 
-    <bean id="logoutFilter" class="org.jboss.windup.sso.spring.SSOLogoutFilter">
+    <bean id="exampleBean2" class="org.jboss.windup.example.spring.ExampleBean2">
 		<constructor-arg value="/index.jsp" />
-        <constructor-arg ref="logoutHandler" />
+        <constructor-arg ref="beanHandler" />
         <constructor-arg>
             <list>
                 <bean
@@ -129,109 +129,100 @@
         </property>
     </bean>
 	
-    <security:http entry-point-ref="ssoEntryPoint"
+    <security:http entry-point-ref="securityEntryPointReference"
         use-expressions="true">
-        <security:custom-filter ref="ssoAuthenticationFilter"
-            position="PRE_AUTH_FILTER" />
-        <security:custom-filter ref="logoutFilter"
-            position="LOGOUT_FILTER" />
-        <security:intercept-url pattern="/tx/authorize/**"
-            access="isAuthenticated()" />
-        <security:intercept-url pattern="/tx/menu"
+        <security:custom-filter ref="securityCustomFilterReference"
+            position="FILTER" />
+        <security:intercept-url pattern="/tx/auth/**"
             access="isAuthenticated()" />
         <security:access-denied-handler
-            error-page="/notauthorizedredirect.jsp" />
+            error-page="/error-page.jsp" />
     </security:http>
 	
 	<security:http access-denied-page="/403.html" entry-point-ref="smEntryPoint">
         <security:intercept-url pattern="/**" access="R_READ, R_ADMIN" />
-        <security:intercept-url pattern="/reprocess.json*" access="R_ADMIN" />
+        <security:intercept-url pattern="/example/**" access="R_ADMIN" />
         <security:logout logout-url="/logout" invalidate-session="true" logout-success-url="${logoutURL}"/>
-        <security:custom-filter position="PRE_AUTH_FILTER" ref="siteminderFilter" />
+        <security:custom-filter position="FILTER" ref="FilterRef" />
     </security:http>
 
     <security:authentication-manager alias="authenticationManager">
         <security:authentication-provider
-            ref="ssoAuthenticationProvider" />
+            ref="securityAuthenticationProvider" />
     </security:authentication-manager>
 
-	<int:channel id="alertingEngineChannel0"/>
-	<int:channel id="commmandsChannel">
+	<int:channel id="channelId"/>
+
+	<int:channel id="channelId2">
 		<int:interceptors>
-			<int:wire-tap channel="loggingChannel"/> 			
-		</int:interceptors>	
-	</int:channel>
-	<int:channel id="loggingChannel">
-			<int:dispatcher task-executor="loggingExecutor"/>
-	</int:channel>
-	<int:channel id="errorChannel">
-		<int:interceptors>
-			<int:wire-tap channel="messagingLoggingChannel"/>
+			<int:wire-tap channel="interceptorChannel"/> 			
 		</int:interceptors>	
 	</int:channel>
 	
-	<int:chain input-channel="commmandsChannel">
+	<int:chain input-channel="chainChannel">
+
 		<int:header-enricher>
-			<int:header name="O_MESSAGE" expression="payload"/>
+			<int:header name="HEADER" expression="expression"/>
 		</int:header-enricher>
-		<int:transformer ref="pipeDelimitedMessageTransformer"/>
-		<int:service-activator method="handleMessage">
-			<bean class="org.jboss.windup.handlers.CMessageLoggingHandler">
-				<property name="exMessageService" ref="exMessageService"/>
+
+		<int:transformer ref="transformerReference"/>
+
+		<int:service-activator method="serviceActivator">
+			<bean class="org.jboss.windup.handlers.Handler">
+				<property name="exPropertyName" ref="exPropertyReference"/>
 			</bean>
 		</int:service-activator>
-		<int:header-value-router header-name="M_TYPE" resolution-required="false">
-	  		<int:mapping value="OK_MESSAGE" channel="okMessageHandlerChannel" />
-	  		<int:mapping value="YESNO_MESSAGE" channel="yesNoMessageHandlerChannel" />
+
+		<int:header-value-router header-name="HEADER_NAME" resolution-required="false">
+	  		<int:mapping value="MAPPING_VALUE" channel="mappingValueChannel" />
+            <int:mapping value="MAPPING_VALUE2" channel="mappingValueChannel2" />
 		</int:header-value-router>
+
 	</int:chain>
-	<int:service-activator input-channel="okMessageHandlerChannel" method="handleMessage">
-		<bean class="org.jboss.windup.handlers.OKMessageHandler">
-			<property name="mService" ref="mService"/>
-			<property name="exMessageService" ref="exMessageService"/>
+
+	<int:service-activator input-channel="serviceActivatorInputChannel" method="serviceActivatorMethod">
+		<bean class="org.jboss.windup.handlers.Handler">
+			<property name="propertyName" ref="propertyReference"/>
+            <property name="propertyName2" ref="propertyReference2"/>
 		</bean>	
 	</int:service-activator>
 	
-	<int:logging-channel-adapter id="aInvalidChannelAdapter" channel="aErrorLoggingChannel" logger-name="aErrorLogger" 
-		expression="payload.cause.message + '; O MESSAGE : ' + payload.failedMessage.headers['O_MESSAGE']" level="ERROR" />	
-	
-	<int-jms:message-driven-channel-adapter channel="bFeedChannel" 
-		container="bFeedListenerContainer" error-channel="bFeedErrorChannel"/>	
+	<int-jms:message-driven-channel-adapter channel="MDChannelAdapter" 
+		container="MDChannelContainer" error-channel="MDChannelError"/>	
 
-	<int:channel id="bFeedRouterChannel"/>
-  	<int:chain id="bFeedRouter" input-channel="bFeedRouterChannel">
-	  	<int:object-to-json-transformer object-mapper="nObjectMapper"/>
+	<int:channel id="channelId3"/>
+
+  	<int:chain id="chainId" input-channel="chainInputChannel">
+	  	<int:object-to-json-transformer object-mapper="objectMapper"/>
 		<int:recipient-list-router>
-			<int:recipient channel="mOutboundChannelAdapter"/>
-			<int:recipient channel="wOutboundChannelAdapter"/>  
+			<int:recipient channel="recipientChannel"/>
+			<int:recipient channel="recipientChannel2"/>  
 		</int:recipient-list-router>
 	</int:chain> 
 	
-	<int:aggregator input-channel="wFeedAggregatorChannel" output-channel="wFeedHandlerChannel" 
-		correlation-strategy="noAttributeCorrelationStrategy" release-strategy="wFeedTimeoutCountSequenceSizeReleaseStrategy"
+	<int:aggregator input-channel="aggregatorInputChannel" output-channel="aggregatorOutputChannel" 
+		correlation-strategy="aggregatorCorrelationStrategy" release-strategy="aggregatorReleaseStrategy"
 		send-partial-result-on-expiry="true" expire-groups-upon-completion="true"/>
 		
-	<jmx:mbean-export default-domain="org.jboss.windup.aengine.si"/>
+	<jmx:mbean-export default-domain="org.jboss.windup.example"/>
 	
-	<context:mbean-export default-domain="org.jboss.windup.aengine.beans"/>
-
-	<jee:jndi-lookup id="aProcessorFromEmail" jndi-name="m/mail/from" />
-
+	<context:mbean-export default-domain="org.jboss.windup.example.beans"/>
 	
 	<bean id="txManager" class="org.springframework.transaction.jta.JtaTransactionManager">
 		<property name="transactionManagerName" value="java:/TransactionManager"/>
 	</bean>
+
 	<tx:advice id="txAdvice" transaction-manager="txManager">
 		<tx:attributes>
-			<tx:method name="resetPassword*" propagation="REQUIRED" read-only="false" />
-			<tx:method name="recordDeactivatedSs" propagation="SUPPORTS" read-only="false" />
+			<tx:method name="txMethodName" propagation="REQUIRED" read-only="false" />
+			<tx:method name="txMethodName2" propagation="SUPPORTS" read-only="false" />
 		</tx:attributes>
 	</tx:advice>
 
   <aop:config>
-    <aop:advisor advice-ref="txAdvice" pointcut-ref="allServiceMethods" order="3"/>
-    <aop:aspect id="serviceExecutionAspect" ref="serviceExecutor" order="1">
-    	<aop:around method="execute" pointcut-ref="allServiceMethods"/>
+    <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutRef" order="3"/>
+    <aop:aspect id="aspectId" ref="aspectReference" order="1">
+    	<aop:around method="execute" pointcut-ref="aroundPointcutReference"/>
   </aop:config>
 
 </beans>
