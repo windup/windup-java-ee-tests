@@ -17,6 +17,7 @@
             </activation-config-property>
         </activation-config>
     </message-driven>
+    
     <message-driven>
         <ejb-name>NotificationEJB</ejb-name>
         <ejb-class>org.jboss.windup.example.NotificationEJB</ejb-class>
@@ -27,33 +28,6 @@
             <resource-env-ref-type>javax.jms.Queue</resource-env-ref-type> 
         </resource-env-ref> 
     </message-driven>
- 
-    <session>
-        <display-name>Windup Bean</display-name>
-        <ejb-name>WindupClientServiceBean</ejb-name>
-        <local-home>org.jboss.windup.example.WindupBeanHome</local-home>
-        <local>org.jboss.windup.example.WindupBean</local>
-        <ejb-class>org.jboss.windup.example.WindupBeanImpl</ejb-class>
-        <session-type>Stateless</session-type>
-        <transaction-type>Container</transaction-type>
-        <resource-ref>
-            <res-ref-name>WorkManager</res-ref-name>
-            <res-type>commonj.work.WorkManager</res-type>
-            <res-auth>Container</res-auth>
-             <res-sharing-scope>Shareable</res-sharing-scope>
-        </resource-ref>
-    </session>
-    
-    <session>
-        <ejb-name>WindupGeneralServiceBean</ejb-name>
-        <ejb-ref>
-            <ejb-ref-name>ejb/WindupService</ejb-ref-name>
-            <ejb-ref-type>Session</ejb-ref-type>
-            <home>org.jboss.windup.example.WindupServiceHome</home>
-            <remote>org.jboss.windup.example.WindupServiceRemote</remote>
-            <mapped-name>windup-service-ear-2/WindupServiceBean/remote</mapped-name>
-        </ejb-ref>
-    </session>
 
     <session>
         <display-name>WindupMessage</display-name>
@@ -67,19 +41,19 @@
         <transaction-type>Container</transaction-type>
         <env-entry>
             <description />
-            <env-entry-name>constants/hubServerURL</env-entry-name>
+            <env-entry-name>windup/example</env-entry-name>
             <env-entry-type>java.lang.String</env-entry-type>
-            <env-entry-value>@hub.server.url@</env-entry-value>
+            <env-entry-value>@windup.example.val@</env-entry-value>
         </env-entry>
         <env-entry>
             <description />
-            <env-entry-name>constants/appID</env-entry-name>
+            <env-entry-name>windup/example2</env-entry-name>
             <env-entry-type>java.lang.String</env-entry-type>
-            <env-entry-value>@hub.server.securityId@</env-entry-value>
+            <env-entry-value>@windup.example2.val@</env-entry-value>
         </env-entry>
         <security-identity>
             <run-as>
-                <role-name>internal_system_user</role-name>
+                <role-name>windup_role</role-name>
             </run-as>
         </security-identity> 
     </session>
@@ -93,11 +67,11 @@
         <transaction-type>Container</transaction-type>
         <security-identity>
             <run-as>
-                <role-name>internal_system_user</role-name>
+                <role-name>windup_role</role-name>
             </run-as>
         </security-identity>
         <env-entry>
-            <description>Determines if a Windup should connect to external</description>
+            <description>Determines if a Windup should</description>
             <env-entry-name>connectToExternal</env-entry-name>
             <env-entry-type>java.lang.Boolean</env-entry-type>
             <env-entry-value>true</env-entry-value>
@@ -122,7 +96,7 @@
         </ejb-local-ref>
         <security-identity>
             <run-as>
-                <role-name>internal_system_user</role-name>
+                <role-name>windup_role</role-name>
             </run-as>
         </security-identity>
     </session>
@@ -158,13 +132,13 @@
             </query>
             <query>
                 <query-method>
-                <method-name>findByMM</method-name>
+                <method-name>findByWindup</method-name>
                 <method-params>
                     <method-param>java.math.BigDecimal</method-param>
                 </method-params>
                 </query-method>
             <ejb-ql>
-            <![CDATA[select distinct object(c) from Windup as c, MmRef as mm where c.mmRefId = mm.mmRefId and mm.mmNum = ?1]]>
+            <![CDATA[select distinct object(c) from Windup as c, WindupRef as m where c.windupRefId = m.mRefId and m.mNum = ?1]]>
             </ejb-ql>
             </query>
         </entity>
@@ -188,21 +162,13 @@
 <assembly-descriptor>
 
     <security-role>
-        <role-name>internal_system_user</role-name>
+        <role-name>windup_role</role-name>
     </security-role>    
 
     <container-transaction>
         <method>
             <ejb-name>MessageDrivenEJB</ejb-name>
             <method-name>*</method-name>
-        </method>
-        <trans-attribute>Required</trans-attribute>
-    </container-transaction>
-
-    <container-transaction>
-        <method>
-            <ejb-name>NotificationEJB</ejb-name>
-            <method-name>onMessage()</method-name>
         </method>
         <trans-attribute>Required</trans-attribute>
     </container-transaction>
@@ -232,6 +198,6 @@
     </interceptor-binding>
 </assembly-descriptor>
 
-<ejb-client-jar>ExtClient.jar</ejb-client-jar>
+<ejb-client-jar>WindupClient.jar</ejb-client-jar>
 </ejb-jar>
 
