@@ -1,5 +1,5 @@
 package org.jboss.windup.test.session.ejb;
 
-public class SessionTwoRemote {
+public class Bean {
 
 }

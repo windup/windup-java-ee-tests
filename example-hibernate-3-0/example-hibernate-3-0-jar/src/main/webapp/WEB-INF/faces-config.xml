@@ -15,7 +15,7 @@
         <managed-bean-scope>request</managed-bean-scope>
 
         <managed-property>
-            <property-name>entityKeyCode</property-name>
+            <property-name>managedPropertyName</property-name>
             <property-class>java.lang.String</property-class>
             <value>exampleValue</value>
         </managed-property>
@@ -28,7 +28,6 @@
     </managed-bean>
 
     <navigation-rule>
-
         <from-view-id>example-pages/example.xhtml</from-view-id>
 
         <navigation-case>

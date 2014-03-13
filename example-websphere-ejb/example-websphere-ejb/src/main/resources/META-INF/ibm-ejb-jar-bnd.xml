@@ -5,16 +5,15 @@
         xsi:schemaLocation="http://websphere.ibm.com/xml/ns/javaee http://websphere.ibm.com/xml/ns/javaee/ibm-ejb-jar-bnd_1_0.xsd"
         version="1.0">
 
-	<message-driven name="SearchResultMDB">
-		<listener-port name="data_from_switch_listener" />
+	<message-driven name="MDBName">
+		<listener-port name="mdb_listener_port_name" />
 	</message-driven>
 	
-	<message-driven name="IntakeMDB">
-		<listener-port name="intake_listener" />
+	<message-driven name="MDBName2">
+		<listener-port name="mdb_listener_port_name_2" />
 	</message-driven>
 	
-	<session name="SchedulerBean" simple-binding-name="SchedulerBean" />
-    <session name="DistributedCacheAgentConsumerBean" simple-binding-name="DistributedCacheAgentConsumerBean" />
-
+	<session name="SessionBean" simple-binding-name="BindingBean" />
+	<session name="SessionBean2" simple-binding-name="BindingBean2" />
 
 </ejb-jar-bnd>

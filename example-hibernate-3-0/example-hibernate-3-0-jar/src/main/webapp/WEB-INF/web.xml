@@ -46,8 +46,8 @@
     <servlet-class>org.jboss.windup.servlets.ExampleServlet</servlet-class>
 
     <init-param>
-      <param-name>application</param-name>
-      <param-value>ApplicationResources</param-value>
+      <param-name>init-param-name</param-name>
+      <param-value>ParamValue</param-value>
     </init-param>
 
     <init-param>
@@ -57,7 +57,7 @@
 
     <load-on-startup>2</load-on-startup>
     <run-as>
-      <role-name>resource</role-name>
+      <role-name>role</role-name>
     </run-as>
 
   </servlet>
@@ -66,13 +66,13 @@
     <servlet-name>example2</servlet-name>
     <servlet-class>org.jboss.windup.servlets.ExampleServlet2</servlet-class>
     <run-as>
-      <role-name>resource</role-name>
+      <role-name>role</role-name>
     </run-as>
   </servlet>
 
   <servlet-mapping>
     <servlet-name>example</servlet-name>
-    <url-pattern>*.ex</url-pattern>
+    <url-pattern>pattern</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
@@ -99,6 +99,6 @@
   </jsp-config>
 
   <security-role>
-    <role-name>resource</role-name>
+    <role-name>role</role-name>
   </security-role>
 </web-app>

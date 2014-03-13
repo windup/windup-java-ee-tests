@@ -22,38 +22,38 @@
 							http://www.springframework.org/schema/integration/ws
         					http://www.springframework.org/schema/integration/ws/spring-integration-ws-2.1.xsd">
 	
-    <context:component-scan base-package="org.jboss.windup.tests.ess" />
+    <context:component-scan base-package="org.jboss.windup.tests.example" />
 
-	<import resource="classpath:spring-ess-ws.xml" />
-	<import resource="classpath:spring-ess-jms.xml" />
+	<import resource="classpath:spring-example.xml" />
+	<import resource="classpath:spring-example-2.xml" />
 	
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location" value="classpath:deployment.properties"/>
 	</bean>
 
-	<bean id="xmlConfiguration" class="org.apache.commons.configuration.XMLConfiguration">
-		<constructor-arg type="java.lang.String" value="profile/server-env-name.xml" />
+	<bean id="exampleBean" class="org.apache.commons.configuration.XMLConfiguration">
+		<constructor-arg type="java.lang.String" value="profile/constructor-arg.xml" />
 		<property name="reloadingStrategy" ref="reloadingStrategy" />
 	</bean>
 	
 	<config:manager id="configuration" source="xmlConfiguration" />
 
 
-	<bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory">
-		<property name="messageFactory">
+	<bean id="exampleBean2" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory">
+		<property name="beanPropertyName">
 			<bean class="com.sun.xml.messaging.saaj.soap.ver1_1.SOAPMessageFactory1_1Impl">
 			</bean>
 		</property>
 	</bean>
 	
-	<bean id="marshaller" class="org.jboss.windup.tests.parser.AnnotationJaxb2Marshaller">
-		<property name="packagesToScan">
+	<bean id="exampleBean3" class="org.jboss.windup.tests.example.Bean3">
+		<property name="beanPropertyName2">
 			<list>
 
 				<value>org.jboss.windup.tests.schema</value>
 			</list>
 		</property>
-		<property name="marshallerProperties">
+		<property name="beanPropertyName3">
 			<map>
 				<entry>
 					<key><util:constant static-field="javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT" /></key>
@@ -68,93 +68,92 @@
 	</bean>
 	
 	<task:scheduled-tasks scheduler="taskScheduler">
-		<task:scheduled ref="asyncMessageGenerator" method="generateJMSMessage" fixed-rate="600000" />
+		<task:scheduled ref="scheduledReference" method="scheduledMethod" fixed-rate="600000" />
     </task:scheduled-tasks>
 	
-    <task:scheduler id="taskScheduler" pool-size="1" />
+    <task:scheduler id="schedulerId" pool-size="1" />
 
 	
-	<int:channel id="queue-input-channel" />
-	<int:channel id="queue-output-channel" />
+	<int:channel id="channel-id-4" />
+	<int:channel id="channel-id-5" />
  
-	<int-jms:message-driven-channel-adapter id="eJmsIn" 
-							destination="eInputQueue" 
-							channel="queue-input-channel" />
+	<int-jms:message-driven-channel-adapter id="messageDrivenChannelAdapterId" 
+							destination="messageDrivenChannelAdapterDestination" 
+							channel="message-driven-channel-adapter-channel" />
 
-	<int:service-activator input-channel="queue-input-channel"
-							output-channel="input-request-channel" 
-							ref="asyncMessageHandler" 
+	<int:service-activator input-channel="service-activator-input-channel"
+							output-channel="service-activator-output-channel" 
+							ref="serviceActivatorReference2" 
 							method="onMessageReceived" />
 							
-	<int-jms:outbound-channel-adapter id="essJmsOut"
-							destination="essOutputQueue" 
-							channel="queue-output-channel" />
+	<int-jms:outbound-channel-adapter id="outboundChannelAdapterId"
+							destination="outboundChannelAdapterDestination" 
+							channel="outbound-channel" />
 	
 	
-	<int:channel id="input-request-channel"/>
-	<int:channel id="output-response-channel"/>
+	<int:channel id="channel-id-6"/>
+	<int:channel id="channel-id-7"/>
 
-	<!-- Webservice Inbound Gateway -->
-	<int-ws:inbound-gateway id="webservice-inbound-gateway"
-							request-channel="input-request-channel"
-							reply-channel="output-response-channel"
-							header-mapper="customSoapHeaderMapper"
+	<int-ws:inbound-gateway id="inbound-gateway-id"
+							request-channel="inbound-gateway-request-channel"
+							reply-channel="inbound-gateway-request-channel"
+							header-mapper="inboundGatewayHeaderMapper"
 							marshaller="marshaller"
 							unmarshaller="marshaller"/>
 							
-	<int:mapping type="org.jboss.windup.tests.schema.ServiceVersionRequest" channel="version-input-channel"/>
-		<int:mapping type="org.jboss.windup.tests.schema.SearchRequestType" channel="search-request-channel"/>
-		<int:mapping type="org.jboss.windup.tests.schema.AuditReportRequestType" channel="report-input-channel"/>
+	<int:mapping type="org.jboss.windup.tests.example.MappingType" channel="mapping-channel"/>
+		<int:mapping type="org.jboss.windup.tests.example.MappingType2" channel="search-request-channel-2"/>
+		<int:mapping type="org.jboss.windup.tests.example.MappingType3" channel="search-request-channel-3"/>
 	</int:payload-type-router>
 	
 	
-	<int:channel id="request-audit-logging-channel">
+	<int:channel id="channel-id">
 		<int:queue />
 	</int:channel>
 	
-	<int:service-activator input-channel="request-audit-logging-channel"
-							ref="requestAuditHandler">
+	<int:service-activator input-channel="service-activator-input-channel-2"
+							ref="serviceActivatorReference">
 		<int:poller max-messages-per-poll="10" fixed-rate="5000" />
 	</int:service-activator>
 	
-	<int:channel id="search-request-channel">
+	<int:channel id="channel-id-2">
 		<int:interceptors>
-			<int:wire-tap channel="request-audit-logging-channel"/>
+			<int:wire-tap channel="channel-id"/>
 		</int:interceptors>
 	</int:channel>
 	
 	
-	<int:channel id="search-routing-channel"
-                 datatype="org.jboss.windup.tests.schema.SearchRequestType"/>
+	<int:channel id="channel-id-3"
+                 datatype="org.jboss.windup.tests.example.ChannelDatatype"/>
 
-	<int:header-value-router input-channel="search-routing-channel" header-name="querySystem">
-		<int:mapping value="AAA" channel="aaa-search-channel" />
-		<int:mapping value="BBB" channel="bbb-search-channel" />
+	<int:header-value-router input-channel="input-channel" header-name="headerValueName">
+		<int:mapping value="Example" channel="example-channel" />
+		<int:mapping value="Example2" channel="example-channel-2" />
 	</int:header-value-router>
 	
 	
-	<int:chain input-channel="aaa-search-channel" output-channel="aaa-search-detail-routing-channel">
-        <int:service-activator ref="searchServiceActivator" method="performSearch"/>
+	<int:chain input-channel="chain-input-channel" output-channel="example-output-channel">
+        <int:service-activator ref="chainServiceActivator" method="serviceActivatorMethod"/>
 	</int:chain>
 	
-	<int:recipient-list-router input-channel="routing-channel">
-        <int:recipient channel="aaa-search-detail-splitting-channel"
-                       selector-expression="headers.get('SearchMetadata').detailData == true"/>
-        <int:recipient channel="response-aggregating-channel"
-                       selector-expression="headers.get('SearchMetadata').detailData == false"/>
+	<int:recipient-list-router input-channel="recipient-input-channel">
+        <int:recipient channel="example-recipient-channel"
+                       selector-expression="expression == true"/>
+        <int:recipient channel="example-recipient-channel-2"
+                       selector-expression="expression2 == true"/>
     </int:recipient-list-router>
 	
-    <int:splitter input-channel="aaa-search-detail-splitting-channel"
-                  output-channel="aaa-search-detail-channel"
-                  ref="searchAAADetailSplitter"/>
+    <int:splitter input-channel="splitter-input-channel"
+                  output-channel="splitter-output-channel"
+                  ref="splitterReference"/>
 				  
-	<int:aggregator input-channel="aaa-search-detail-aggregating-channel"
-				output-channel="response-aggregating-channel"
-				ref="searchAAADetailAggregator" />
+	<int:aggregator input-channel="aggregator-input-channel"
+				output-channel="aggregator-output-channel"
+				ref="aggregatorReference" />
 	
-	<int:transformer id="soap-to-jms-transformer" 
-					input-channel="async-response-channel"
-					output-channel="queue-output-channel"
-					ref="asyncMessageTransformer"
+	<int:transformer id="transformer-id" 
+					input-channel="transformer-input-channel"
+					output-channel="transformer-output-channel"
+					ref="transformerReference"
 					method="transform"/>
 </beans>

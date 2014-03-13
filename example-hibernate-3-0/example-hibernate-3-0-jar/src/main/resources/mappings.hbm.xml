@@ -29,14 +29,14 @@
 
     <sql-query name="getExample11">
         <return-scalar column="EX12" type="string"/>
-        <return-scalar column="EX13" type="org.jboss.windup.hibernate.CDT"/>
+        <return-scalar column="EX13" type="org.jboss.windup.hibernate.Example"/>
         <!-- not sure how to cleanly recreate this -->
         <!-- <![CDATA[]]> -->
     </sql-query>
 
     <sql-query name="getExample14">
         <return-scalar column="EX15" type="string"/>
-        <return-scalar column="EX16" type="org.jboss.windup.hibernate.CDT"/>
+        <return-scalar column="EX16" type="org.jboss.windup.hibernate.Example"/>
         <!-- not sure how to cleanly recreate this -->
         <!-- <![CDATA[]]> -->
     </sql-query>

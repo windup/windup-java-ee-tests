@@ -18,7 +18,7 @@
 
         <resource-description>
             <res-ref-name>jdbc/ExampleDS2</res-ref-name>
-            <jndi-name>org.jboss.datasource.exampleDataSource</jndi-name>
+            <jndi-name>org.jboss.datasource.exampleDataSource2</jndi-name>
         </resource-description>
 
     </reference-descriptor>

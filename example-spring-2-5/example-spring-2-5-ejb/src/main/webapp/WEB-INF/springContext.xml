@@ -1,45 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <import resource="./path/to/example-adaptor.xml"/>
     <import resource="./path/to/example-adaptor2.xml"/>
     
     <bean id="example" class="org.springframework.beans.factory.config.ListFactoryBean">
-
-        <property name="sourceList">
-
+        <property name="beanName">
             <list>
 
                 <bean class="org.jboss.windup.tests.beans.ExampleBean">
-
-                    <constructor-arg index="0" value="/exampleAttribute" />
-
+                    <constructor-arg index="0" value="/constructor-arg-value" />
                     <constructor-arg index="1">
-
                         <list>
                             <value>ExampleValue</value>
                             <value>ExampleValue2</value>
                         </list>
-
                     </constructor-arg>
-
                 </bean>
 
                 <bean class="org.jboss.windup.tests.beans.ExampleBean2">
-
-                    <constructor-arg index="0" value="/extendedAttributes" />
-
+                    <constructor-arg index="0" value="/constructor-arg-value-2" />
                     <constructor-arg index="1">
-
                         <list>
                             <value>ExampleValue</value>
                             <value>ExampleValue2</value>
                         </list>
-
                     </constructor-arg>
-
                 </bean>
                 
                 <ref bean="example-adaptor"/>
@@ -48,52 +36,36 @@
             </list>
 
         </property>
-
     </bean>
 
     <bean id="example2" class="org.springframework.beans.factory.config.ListFactoryBean">
-
         <property name="sourceList">
-
             <list>
 
                 <bean class="org.jboss.windup.tests.beans.ExampleBean3">
-
                     <constructor-arg index="0" value="/exampleAttribute" />
-
                     <constructor-arg index="1">
-
                         <list>
                             <value>ExampleValue</value>
                             <value>ExampleValue2</value>
                         </list>
-
                     </constructor-arg>
-
                 </bean>
 
                 <bean class="org.jboss.windup.tests.beans.ExampleBean4">
-
                     <constructor-arg index="0" value="/extendedAttributes" />
-
                     <constructor-arg index="1">
-
                         <list>
                             <value>ExampleValue</value>
                             <value>ExampleValue2</value>
                         </list>
-
                     </constructor-arg>
-
                 </bean>
                 
                 <ref bean="example-adaptor"/>
                 <ref bean="example-adaptor2"/>
 
             </list>
-
         </property>
-
     </bean>
-
 </beans>

@@ -5,8 +5,7 @@
    <persistence-unit name="exampleService">
       <jta-data-source>java:/exampleDS</jta-data-source>
       <properties>
-          <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle9iDialect"/>
-          <property name="hibernate.cache.use_second_level_cache" value="true" />
+          <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
       </properties>
    </persistence-unit>
 </persistence>
