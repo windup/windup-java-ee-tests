@@ -1,5 +1,5 @@
 package org.jboss.windup.tests.spring.bean;
 
-public class SMTP {
+public class A {
 
 }

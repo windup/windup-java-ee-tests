@@ -168,33 +168,32 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="jndiTemplate" ref="jndiTemplate"/>
 	</bean>
 	    
-    <int:channel id="smtpIn"/>
-	<int:channel id="smtpOut"/>
-	<int:transformer input-channel="smtpIn" output-channel="smtpOut">
-  		<bean class="org.jboss.windup.tests.spring.bean.SMTP"/>
+    <int:channel id="sIn"/>
+	<int:channel id="sOut"/>
+	<int:transformer input-channel="sIn" output-channel="sOut">
+  		<bean class="org.jboss.windup.tests.spring.bean.S"/>
   	</int:transformer>
-	<int:gateway id="smtpGateway" service-interface="org.jboss.windup.tests.spring.messaging.SmtpGateway" default-request-channel="smtpGateway" />
-    <int-jms:outbound-channel-adapter channel="smtpGateway" destination-name="MAIL" connection-factory="ConnectionFactory" destination-resolver="destinationResolver" />
+	<int:gateway id="sGateway" service-interface="org.jboss.windup.tests.spring.messaging.SGateway" default-request-channel="sGateway" />
+    <int-jms:outbound-channel-adapter channel="sGateway" destination-name="M" connection-factory="ConnectionFactory" destination-resolver="destinationResolver" />
 
-	<bean id="mobileGateway" class="org.jboss.windup.tests.spring.messaging.MobileGateway"/>
+	<bean id="mGateway" class="org.jboss.windup.tests.spring.messaging.MGateway"/>
 	
-	<int:channel id="mobileGatewayChannelOut1"/>
-	<int:channel id="mobileGatewayChannelOut2"/>
+	<int:channel id="mGateway1"/>
+	<int:channel id="mGateway2"/>
 		
-	<int:gateway id="mobileGateway" service-interface="org.jboss.windup.tests.spring.messaging.MobileGateway" default-request-channel="mobileGatewayChannelOut1">
-		<int:method name="send" request-channel="mobileGatewayChannelOut1"/>
-		<int:method name="send2" request-channel="mobileGatewayChannelOut2"/>
+	<int:gateway id="mGateway" service-interface="org.jboss.windup.tests.spring.messaging.MGateway" default-request-channel="mGatewayOut1">
+		<int:method name="s" request-channel="mGateway1"/>
+		<int:method name="s2" request-channel="mGateway2"/>
 	</int:gateway>
 	
-    <int-jms:outbound-channel-adapter channel="mobileGatewayChannelOut1" destination-name="GATEWAY1" connection-factory="ConnectionFactory" destination-resolver="destinationResolver" />	
-    <int-jms:outbound-channel-adapter channel="mobileGatewayChannelOut2" destination-name="GATEWAY2" connection-factory="ConnectionFactory" destination-resolver="destinationResolver" />
+    <int-jms:outbound-channel-adapter channel="mGateway1" destination-name="GATEWAY1" connection-factory="ConnectionFactory" destination-resolver="destinationResolver" />
+    <int-jms:outbound-channel-adapter channel="mGateway2" destination-name="GATEWAY2" connection-factory="ConnectionFactory" destination-resolver="destinationResolver" />
     
-    <!-- SMS Gateway -->
-    <bean id="smsGateway" class="org.jboss.windup.tests.spring.messaging.SmtpGateway"/>
+    <bean id="aGateway" class="org.jboss.windup.tests.spring.messaging.AGateway"/>
     
-    <int:channel id="smsChannelOut"/>
+    <int:channel id="aChannel"/>
     
-    <int:gateway id="smsGateway" service-interface="org.jboss.windup.tests.spring.messaging.SmtpGateway" default-request-channel="smsChannelOut" />
+    <int:gateway id="aGateway" service-interface="org.jboss.windup.tests.spring.messaging.AGateway" default-request-channel="aChannelOut" />
     
-    <int-jms:outbound-channel-adapter channel="smsChannelOut" destination-name="MESSAGES" connection-factory="ConnectionFactory" destination-resolver="destinationResolver" />	
+    <int-jms:outbound-channel-adapter channel="aChannelOut" destination-name="MESSAGES" connection-factory="ConnectionFactory" destination-resolver="destinationResolver" />	
 </beans>
