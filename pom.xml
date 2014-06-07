@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.jboss.windup.tests</groupId>
+    <artifactId>root</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>example-ejb-1-1</module>
+        <module>example-ejb-2-0</module>
+        <module>example-ejb-2-1</module>
+        <module>example-ejb-3-0</module>
+        <module>example-hibernate-3-0</module>
+        <module>example-spring-2-0</module>
+        <module>example-spring-2-5</module>
+        <module>example-spring-3-0</module>
+        <module>example-spring-3-1</module>
+        <module>example-web</module>
+        <module>example-weblogic-ejb</module>
+        <module>example-websphere</module>
+        <module>example-websphere-ejb</module>
+    </modules>
+</project>
